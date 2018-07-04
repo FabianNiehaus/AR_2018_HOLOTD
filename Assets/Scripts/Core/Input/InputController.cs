@@ -15,20 +15,10 @@ namespace Core.Input
 	/// <summary>
 	/// Class to manage tap/drag/pinch gestures and other controls
 	/// </summary>
-	public class InputController : Singleton<InputController>
+	public class InputController : Singleton<InputController>, IInputClickHandler
     {
 
-        enum InputDevices
-        {
-            Gaze,
-            Mouse,
-            Touch
-        }
-
-        InputDevices inputDevice;
-
         AnimatedCursor gazeCursor;
-        GestureRecognizer gr; 
         
 		/// <summary>
 		/// How quickly flick velocity is accumulated with movements
@@ -65,20 +55,10 @@ namespace Core.Input
 		/// </summary>
 		public float holdTime = 0.8f;
 
-		/// <summary>
-		/// Sensitivity of mouse-wheel based zoom
-		/// </summary>
-		public float mouseWheelSensitivity = 1.0f;
-
         /// <summary>
 		/// How many gestures to track
 		/// </summary>
 		public int trackGestures = 2;
-
-        /// <summary>
-        /// How many mouse buttons to track
-        /// </summary>
-        public int trackMouseButtons = 2;
 
 		/// <summary>
 		/// Flick movement threshold
@@ -91,57 +71,19 @@ namespace Core.Input
 		List<GestureInfo> m_GestureInfo;
 
         /// <summary>
-        /// All the touches we're tracking
-        /// </summary>
-        List<TouchInfo> m_Touches;
-
-		/// <summary>
-		/// Mouse button info
-		/// </summary>
-		List<MouseButtonInfo> m_MouseInfo;
-
-		/// <summary>
-		/// Gets the number of active touches
-		/// </summary>
-		public int activeTouchCount
-		{
-			get { return m_Touches.Count; }
-		}
-
-        /// <summary>
 		/// Tracks if any gesture inputs were recognized this frame
 		/// </summary>
 		public bool gestureRecognizedThisFrame { get; private set; }
 
         /// <summary>
-        /// Tracks if any of the mouse buttons were pressed this frame
-        /// </summary>
-        public bool mouseButtonPressedThisFrame { get; private set; }
-
-        /// <summary>
         /// Tracks if the gaze moved this frame
         /// </summary>
         public bool gazeMovedOnThisFrame { get; private set; }
-
-        /// <summary>
-        /// Tracks if the mouse moved this frame
-        /// </summary>
-        public bool mouseMovedOnThisFrame { get; private set; }
-
-		/// <summary>
-		/// Tracks if a touch began this frame
-		/// </summary>
-		public bool touchPressedThisFrame { get; private set; }
  
         /// <summary>
         /// Current Gaze pointer info
         /// </summary>
         public PointerInfo basicGazeInfo { get; private set; }
-
-        /// <summary>
-        /// Current mouse pointer info
-        /// </summary>
-        public PointerInfo basicMouseInfo { get; private set; }
 
 		/// <summary>
 		/// Event called when a pointer press is detected
@@ -188,72 +130,17 @@ namespace Core.Input
 		/// </summary
         public event Action<PointerInfo> gazeMoved;
 
-		/// <summary>
-		/// Event called whenever the mouse is moved
-		/// </summary>
-		public event Action<PointerInfo> mouseMoved;
 
 		protected override void Awake()
 		{
 			base.Awake();
 
-            //Debug.Log("InputController has awoken!");
-            //Debug.Log(HoloToolkit.Unity.InputModule.GazeManager.Instance.ToString());
+            Debug.Log("GazeManager is present!");
 
-			
-            if(HoloToolkit.Unity.InputModule.GazeManager.Instance)
-            {
-                gr = new GestureRecognizer();
-                gr.TappedEvent += RegisterTap;
-                gr.StartCapturingGestures();
+            gazeCursor = FindObjectOfType<AnimatedCursor>();
 
-                Debug.Log("GazeManager is present!");
-
-                inputDevice = InputDevices.Gaze;
-
-                gazeCursor = FindObjectOfType<AnimatedCursor>();
-
-                m_GestureInfo = new List<GestureInfo>();
-                basicGazeInfo = new GazeCursorInfo { currentPosition = gazeCursor.transform.position };
-
-                for (int i = 0; i < trackGestures; ++i)
-                {
-                    m_GestureInfo.Add(new GestureInfo
-                    {
-                        currentPosition = gazeCursor.transform.position,
-                        gestureId = i
-                    });
-                }
-
-            }
-            // Mouse specific initialization
-            else if (UnityInput.mousePresent)
-			{
-                Debug.Log("No GazeManager present, switching to Mouse Input");
-
-				m_MouseInfo = new List<MouseButtonInfo>();
-				basicMouseInfo = new MouseCursorInfo {currentPosition = UnityInput.mousePosition};
-
-				for (int i = 0; i < trackMouseButtons; ++i)
-				{
-					m_MouseInfo.Add(new MouseButtonInfo
-					{
-						currentPosition = UnityInput.mousePosition,
-						mouseButtonId = i
-					});
-				}
-
-                inputDevice = InputDevices.Mouse;
-			}
-            else
-            {
-                Debug.Log("No GazeManager or mouse present!");
-                m_Touches = new List<TouchInfo>();
-
-                inputDevice = InputDevices.Touch;
-            }
-
-            UnityInput.simulateMouseWithTouches = false;
+            m_GestureInfo = new List<GestureInfo>();
+            basicGazeInfo = new GazeCursorInfo { currentPosition = gazeCursor.transform.position };
         }
 
 		/// <summary>
@@ -261,125 +148,11 @@ namespace Core.Input
 		/// </summary>
 		void Update()
 		{
-            switch (inputDevice)
-            {
-                case InputDevices.Gaze: UpdateGaze(); break;
-                //case InputDevices.Mouse: UpdateMouse(); break;
-                //case InputDevices.Touch: UpdateTouches(); break;
-            }
-		}
 
-        void RegisterTap(InteractionSourceKind source, int tapCount, Ray headRay)
-        {
-            // Button events
-            for (int i = 0; i < trackGestures; ++i)
-            {
-                GestureInfo gesture = m_GestureInfo[i];
-                gesture.delta = basicGazeInfo.delta;
-                gesture.previousPosition = basicGazeInfo.previousPosition;
-                gesture.currentPosition = basicGazeInfo.currentPosition;
-                if (tapCount > 0)
-                {
-                    if (!gesture.isRecognized)
-                    {
-                        // First press
-                        gestureRecognizedThisFrame = true;
-                        gesture.isRecognized = true;
-                        gesture.startPosition = gazeCursor.transform.position;
-                        gesture.startTime = Time.realtimeSinceStartup;
-                        gesture.startedOverUI = EventSystem.current.IsPointerOverGameObject(-gesture.gestureId - 1);
+            UpdateGaze();
 
-                        // Reset some stuff
-                        gesture.totalMovement = 0;
-                        gesture.isDrag = false;
-                        gesture.wasHold = false;
-                        gesture.isHold = false;
-                        gesture.flickVelocity = Vector2.zero;
-
-                        if (pressed != null)
-                        {
-                            pressed(gesture);
-                        }
-                    }
-                    else
-                    {
-                        float moveDist = gesture.delta.magnitude;
-                        // Dragging?
-                        gesture.totalMovement += moveDist;
-                        if (gesture.totalMovement > dragThresholdGaze)
-                        {
-                            bool wasDrag = gesture.isDrag;
-
-                            gesture.isDrag = true;
-                            if (gesture.isHold)
-                            {
-                                gesture.wasHold = gesture.isHold;
-                                gesture.isHold = false;
-                            }
-
-                            // Did it just start now?
-                            if (!wasDrag)
-                            {
-                                if (startedDrag != null)
-                                {
-                                    startedDrag(gesture);
-                                }
-                            }
-                            if (dragged != null)
-                            {
-                                dragged(gesture);
-                            }
-
-                            // Flick?
-                            if (moveDist > flickThreshold)
-                            {
-                                gesture.flickVelocity =
-                                    (gesture.flickVelocity * (1 - k_FlickAccumulationFactor)) +
-                                    (gesture.delta * k_FlickAccumulationFactor);
-                            }
-                            else
-                            {
-                                gesture.flickVelocity = Vector2.zero;
-                            }
-                        }
-                        else
-                        {
-                            // Stationary?
-                            if (!gesture.isHold &&
-                                !gesture.isDrag &&
-                                Time.realtimeSinceStartup - gesture.startTime >= holdTime)
-                            {
-                                gesture.isHold = true;
-                                if (startedHold != null)
-                                {
-                                    startedHold(gesture);
-                                }
-                            }
-                        }
-                    }
-                }
-                else // Gesture not released
-                {
-                    if (gesture.isRecognized) // Released
-                    {
-                        gesture.isRecognized = false;
-                        // Quick enough (with no drift) to be a tap?
-                        if (!gesture.isDrag &&
-                            Time.realtimeSinceStartup - gesture.startTime < tapTime)
-                        {
-                            if (tapped != null)
-                            {
-                                tapped(gesture);
-                            }
-                        }
-                        if (released != null)
-                        {
-                            released(gesture);
-                        }
-                    }
-                }
-            }
         }
+
 
         void UpdateGaze()
         {
@@ -397,6 +170,11 @@ namespace Core.Input
                     gazeMoved(basicGazeInfo);
                 }
             }
+            
+        }
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
             
         }
 
