@@ -18,6 +18,8 @@ TagManager:
   - MainMenuConfirmButton
   - RestartConfirmButton
   - UIRaycastCamera
+  - GameManager
+  - TowerContainer
   layers:
   - Default
   - TransparentFX

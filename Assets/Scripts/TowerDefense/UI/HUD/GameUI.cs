@@ -938,8 +938,9 @@ namespace TowerDefense.UI.HUD
 					// Place the ghost
 					Tower controller = m_CurrentTower.controller;
 
-					Tower createdTower = Instantiate(controller);
-					createdTower.Initialize(m_CurrentArea, m_GridPosition);
+					Tower createdTower = Instantiate(controller, GameObject.FindGameObjectWithTag("TowerContainer").transform);
+                    //createdTower.transform.SetParent(null);
+                    createdTower.Initialize(m_CurrentArea, m_GridPosition);
 
 					CancelGhostPlacement();
 				}
