@@ -121,8 +121,9 @@ namespace TowerDefense.Level
 			agentInstance.transform.position = spawnPosition;
 			agentInstance.Initialize();
 			agentInstance.SetNode(node);
-			agentInstance.transform.rotation = node.transform.rotation;
-		}
+            //agentInstance.transform.rotation = node.transform.rotation;
+            agentInstance.transform.rotation = new Quaternion(0, -180f, 0, 0);
+        }
 
 		/// <summary>
 		/// Launch the waveCompleted event

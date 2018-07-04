@@ -499,7 +499,7 @@ MonoBehaviour:
   idleWaitTime: 2
 --- !u!136 &136830690140104794
 CapsuleCollider:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 2
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1300182006533744}

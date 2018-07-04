@@ -147,9 +147,11 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 6456fd7e2260b45febee82488eca4496, type: 2}
   m_StaticBatchInfo:
@@ -162,6 +164,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -179,9 +182,11 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 3
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 7f1957ba236084cfcaa1f5c9da66a68b, type: 2}
   m_StaticBatchInfo:
@@ -194,6 +199,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -299,8 +305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedeb0b3c5e104ea19d0d4599d22ab97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
-  chanceToSpawnCollisionProjectile: 1
+  damage: 5
+  chanceToSpawnCollisionPrefab: 1
   collisionParticles: {fileID: 198059975614214484, guid: f43a73bac381a4517bdade908e622a9e,
     type: 2}
   alignment:

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910bcb715cd3344619df786cb0658efb, type: 3}
   m_Name: Basic Glider
   m_EditorClassIdentifier: 
-  agentName: Basic Tooper
-  agentDescription: Little more than cannon fodder
+  agentName: Basic Glider
+  agentDescription: Going faaaaaast
   agentPrefab: {fileID: 114748746065722086, guid: 64075c6b2e21e2a49b07d7ffe955a84c,
     type: 2}

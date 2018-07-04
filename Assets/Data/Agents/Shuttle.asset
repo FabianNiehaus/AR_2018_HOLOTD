@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 910bcb715cd3344619df786cb0658efb, type: 3}
-  m_Name: Super Hovertank
+  m_Name: Shuttle
   m_EditorClassIdentifier: 
-  agentName: Super Hovertank
-  agentDescription: Strong, slow. Hefty.
-  agentPrefab: {fileID: 114975712440518228, guid: 60000d22132204baa9db73f0b0c0d987,
+  agentName: Shuttle
+  agentDescription: Slow, but oh
+  agentPrefab: {fileID: 114748746065722086, guid: b324158a515b45d4eacd21efc061ac12,
     type: 2}

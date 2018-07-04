@@ -202,8 +202,6 @@ namespace Core.Health
 			currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 			info.newHealth = currentHealth;
 
-            Debug.Log(currentHealth);
-
             if (healthChanged != null)
 			{
 				healthChanged(info);

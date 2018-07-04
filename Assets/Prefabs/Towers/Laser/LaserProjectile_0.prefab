@@ -53,8 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedeb0b3c5e104ea19d0d4599d22ab97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 12
-  chanceToSpawnCollisionProjectile: 1
+  damage: 9
+  chanceToSpawnCollisionPrefab: 1
   collisionParticles: {fileID: 198278080792148898, guid: aeef7b8d79b23415c9c75f54ec09a598,
     type: 2}
   alignment:

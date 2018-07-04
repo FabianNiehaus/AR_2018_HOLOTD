@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedeb0b3c5e104ea19d0d4599d22ab97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0.25
+  damage: 1
   chanceToSpawnCollisionPrefab: 0.33
   collisionParticles: {fileID: 198278080792148898, guid: a4e0e87699dbd400aaf85d616d2618f8,
     type: 2}
