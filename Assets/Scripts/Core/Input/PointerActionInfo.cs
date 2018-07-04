@@ -10,12 +10,12 @@ namespace Core.Input
 		/// <summary>
 		/// Position where the input started
 		/// </summary>
-		public Vector2 startPosition;
+		public Vector3 startPosition;
 
 		/// <summary>
 		/// Flick velocity is a moving average of deltas
 		/// </summary>
-		public Vector2 flickVelocity;
+		public Vector3 flickVelocity;
 
 		/// <summary>
 		/// Total movement for this pointer, since being held down

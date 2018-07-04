@@ -30,8 +30,8 @@ namespace HoloTD.Input
             {
                 InputController controller = InputController.instance;
 
-                controller.tapped += OnTap;
-                controller.gazeMoved += OnGazeMoved;
+                controller.Tapped += OnTap;
+                controller.GazeMoved += OnGazeMoved;
             }
         }
 
@@ -47,8 +47,8 @@ namespace HoloTD.Input
 
             InputController controller = InputController.instance;
 
-            controller.tapped -= OnTap;
-            controller.gazeMoved -= OnGazeMoved;
+            controller.Tapped -= OnTap;
+            controller.GazeMoved -= OnGazeMoved;
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace HoloTD.Input
                                 m_GameUI.CancelGhostPlacement();
                             }
                             GameUI.instance.SetToBuildMode(controller);
-                            GameUI.instance.TryMoveGhost(InputController.instance.basicGazeInfo);
+                            GameUI.instance.TryMoveGhost(InputController.instance.BasicGazeInfo);
                         }
                         break;
                     }
@@ -112,7 +112,7 @@ namespace HoloTD.Input
                 {
                     Tower controller = LevelManager.instance.towerLibrary[9];
                     GameUI.instance.SetToBuildMode(controller);
-                    GameUI.instance.TryMoveGhost(InputController.instance.basicGazeInfo);
+                    GameUI.instance.TryMoveGhost(InputController.instance.BasicGazeInfo);
                 }
             }
         }

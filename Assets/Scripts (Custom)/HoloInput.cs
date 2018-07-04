@@ -16,11 +16,7 @@ namespace HoloTD.Input
         {
             get
             {
-                bool gazeManagerPresent = HoloToolkit.Unity.InputModule.GazeManager.Instance;
-                bool gestureRecognizedThisFrame = InputController.instance.gestureRecognizedThisFrame;
-                bool gazeMovedOnThisFrame = InputController.instance.gazeMovedOnThisFrame;
-
-                return (gazeManagerPresent || gestureRecognizedThisFrame || gazeMovedOnThisFrame);
+                return HoloToolkit.Unity.InputModule.GazeManager.Instance;
             }
         }
 

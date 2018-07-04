@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UI_Positioning : MonoBehaviour {
-    public GameObject ui;
+    GameObject ui;
     float uiDistance;
 
     float x_change;

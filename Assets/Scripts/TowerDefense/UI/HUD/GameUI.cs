@@ -4,10 +4,12 @@ using Core.Input;
 using Core.Utilities;
 using HoloTD.Input;
 using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity.UX;
 using JetBrains.Annotations;
 using TowerDefense.Level;
 using TowerDefense.Towers;
 using TowerDefense.Towers.Placement;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -156,7 +158,7 @@ namespace TowerDefense.UI.HUD
 		/// <summary>
 		/// Our cached camera reference
 		/// </summary>
-		Camera m_Camera;
+		public Camera m_Camera;
 
 		/// <summary>
 		/// Current tower placeholder. Will be null if not in the <see cref="State.Building" /> state.
@@ -368,7 +370,7 @@ namespace TowerDefense.UI.HUD
 		{
 			UIPointer pointer = WrapPointer(pointerInfo);
 
-			// Do nothing if we're over UI
+            // Do nothing if we're over UI
 			if (pointer.overUI)
 			{
 				return;
@@ -390,8 +392,14 @@ namespace TowerDefense.UI.HUD
 
             UIPointer pointer = WrapPointer(info);
 
-			// Do nothing if we're over UI
-			if (pointer.overUI && hideWhenInvalid)
+            /*
+            LineRenderer lineRenderer = GetComponentInChildren<LineRenderer>();
+            lineRenderer.SetPosition(0, pointer.ray.origin);
+            lineRenderer.SetPosition(1, pointer.ray.direction * 1000);
+            */
+
+            // Do nothing if we're over UI
+            if (pointer.overUI && hideWhenInvalid)
 			{
 				m_CurrentTower.Hide();
 				return;
@@ -801,12 +809,13 @@ namespace TowerDefense.UI.HUD
 		/// </summary>
 		protected UIPointer WrapPointer(PointerInfo pointerInfo)
 		{
-			return new UIPointer
+            return new UIPointer
 			{
 				overUI = IsOverUI(pointerInfo),
 				pointer = pointerInfo,
-				ray = m_Camera.ScreenPointToRay(pointerInfo.currentPosition)
-			};
+				ray = new Ray(m_Camera.transform.position, pointerInfo.currentPosition - m_Camera.transform.position)
+
+            };
 		}
 
 		/// <summary>
@@ -816,37 +825,12 @@ namespace TowerDefense.UI.HUD
 		/// <returns>True if the event system reports this pointer being over UI</returns>
 		protected bool IsOverUI(PointerInfo pointerInfo)
 		{
-			int pointerId;
 			EventSystem currentEventSystem = EventSystem.current;
 
-			// Pointer id is negative for mouse, positive for touch
-			var cursorInfo = pointerInfo as MouseCursorInfo;
-			var mbInfo = pointerInfo as MouseButtonInfo;
-			var touchInfo = pointerInfo as TouchInfo;
-            var gazeCursorInfo = pointerInfo as GazeCursorInfo;
-
-            if (gazeCursorInfo != null)
+            if (!((pointerInfo is GestureInfo) || (pointerInfo is GazeCursorInfo)))
             {
-                pointerId = 1;
+                throw new ArgumentException("Passed pointerInfo is not a TouchInfo or MouseCursorInfo", "pointerInfo");
             }
-            else if(cursorInfo != null)
-			{
-				pointerId = PointerInputModule.kMouseLeftId;
-			}
-			else if (mbInfo != null)
-			{
-				// LMB is 0, but kMouseLeftID = -1;
-				pointerId = -mbInfo.mouseButtonId - 1;
-			}
-			else if (touchInfo != null)
-			{
-				pointerId = touchInfo.touchId;
-			}
-             
-            else
-			{
-				throw new ArgumentException("Passed pointerInfo is not a TouchInfo or MouseCursorInfo", "pointerInfo");
-			}
 
             return GazeManager.Instance.IsGazingAtObject && GazeManager.Instance.HitObject != null;
 

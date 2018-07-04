@@ -10,17 +10,17 @@ namespace Core.Input
 		/// <summary>
 		/// Current pointer position
 		/// </summary>
-		public Vector2 currentPosition;
+		public Vector3 currentPosition;
 
 		/// <summary>
 		/// Previous frame's pointer position
 		/// </summary>
-		public Vector2 previousPosition;
+		public Vector3 previousPosition;
 
 		/// <summary>
 		/// Movement delta for this frame
 		/// </summary>
-		public Vector2 delta;
+		public Vector3 delta;
 
 		/// <summary>
 		/// Tracks if this pointer began over UI
