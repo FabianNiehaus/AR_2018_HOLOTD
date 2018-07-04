@@ -4,6 +4,7 @@ using TowerDefense.UI.HUD;
 using UnityEngine;
 using UnityInput = UnityEngine.Input;
 using State = TowerDefense.UI.HUD.GameUI.State;
+using HoloToolkit.Unity.InputModule;
 
 namespace TowerDefense.Input
 {
@@ -249,7 +250,7 @@ namespace TowerDefense.Input
 				}
 				else if (m_GameUI.state == State.Building && !touchInfo.startedOverUI)
 				{
-					m_GameUI.TryMoveGhost(touchInfo, false);
+					m_GameUI.TryMoveGhost(InputController.instance.basicGazeInfo);
 					if (m_GameUI.IsGhostAtValidPosition() && m_GameUI.IsValidPurchase())
 					{
 						confirmationButtons.canvasEnabled = true;

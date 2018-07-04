@@ -2,6 +2,8 @@ using System;
 using Core.Health;
 using Core.Input;
 using Core.Utilities;
+using HoloTD.Input;
+using HoloToolkit.Unity.InputModule;
 using JetBrains.Annotations;
 using TowerDefense.Level;
 using TowerDefense.Towers;
@@ -379,14 +381,15 @@ namespace TowerDefense.UI.HUD
 		/// </summary>
 		/// <param name="pointerInfo">The pointer we're using to position the tower</param>
 		/// <param name="hideWhenInvalid">Optional parameter for configuring if the ghost is hidden when in an invalid location</param>
-		public void TryMoveGhost(PointerInfo pointerInfo, bool hideWhenInvalid = true)
+		public void TryMoveGhost(PointerInfo info, bool hideWhenInvalid = true)
 		{
 			if (m_CurrentTower == null)
 			{
 				throw new InvalidOperationException("Trying to move the tower ghost when we don't have one");
 			}
 
-			UIPointer pointer = WrapPointer(pointerInfo);
+            UIPointer pointer = WrapPointer(info);
+
 			// Do nothing if we're over UI
 			if (pointer.overUI && hideWhenInvalid)
 			{
@@ -820,8 +823,13 @@ namespace TowerDefense.UI.HUD
 			var cursorInfo = pointerInfo as MouseCursorInfo;
 			var mbInfo = pointerInfo as MouseButtonInfo;
 			var touchInfo = pointerInfo as TouchInfo;
+            var gazeCursorInfo = pointerInfo as GazeCursorInfo;
 
-			if (cursorInfo != null)
+            if (gazeCursorInfo != null)
+            {
+                pointerId = 1;
+            }
+            else if(cursorInfo != null)
 			{
 				pointerId = PointerInputModule.kMouseLeftId;
 			}
@@ -834,13 +842,15 @@ namespace TowerDefense.UI.HUD
 			{
 				pointerId = touchInfo.touchId;
 			}
-			else
+             
+            else
 			{
 				throw new ArgumentException("Passed pointerInfo is not a TouchInfo or MouseCursorInfo", "pointerInfo");
 			}
 
-			return currentEventSystem.IsPointerOverGameObject(pointerId);
-		}
+            return GazeManager.Instance.IsGazingAtObject && GazeManager.Instance.HitObject != null;
+
+        }
 
 		/// <summary>
 		/// Move the ghost to the pointer's position

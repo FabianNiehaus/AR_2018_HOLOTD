@@ -25,7 +25,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1041523078714838
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,6 +253,7 @@ GameObject:
   - component: {fileID: 81126220845328076}
   - component: {fileID: 114959835900917944}
   - component: {fileID: 114674451970149672}
+  - component: {fileID: 114146918551925200}
   - component: {fileID: 114625939251100072}
   - component: {fileID: 114172299306390798}
   - component: {fileID: 114111965984084380}
@@ -798,6 +799,17 @@ MonoBehaviour:
   Axis0Destination: 0
   Axis1Destination: 4
   Axis2Destination: 6
+--- !u!114 &114146918551925200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1783978575910712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d273837c0acfd4fac06e22fc8cde04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114172299306390798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -821,11 +833,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63976be1194ac47c6931b989bc8c2de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragThresholdGaze: 5
   dragThresholdTouch: 5
   dragThresholdMouse: 1
+  dragThresholdGazeCursor: 0
   tapTime: 0.2
   holdTime: 0.8
   mouseWheelSensitivity: 1
+  trackGestures: 2
   trackMouseButtons: 2
   flickThreshold: 2
 --- !u!114 &114234561921314444
@@ -997,7 +1012,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1783978575910712}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9307288a6cd8a4302be1aa1c6c94be26, type: 3}
   m_Name: 
@@ -1123,7 +1138,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1783978575910712}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f1de20cdb664794a821b0f620812408, type: 3}
   m_Name: 
