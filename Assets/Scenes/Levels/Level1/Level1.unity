@@ -2070,8 +2070,8 @@ MonoBehaviour:
   towerLibrary: {fileID: 11400000, guid: f9a88c696ebce45318e1ae33adc9cfbc, type: 2}
   startingCurrency: 10
   currencyGainer:
-    constantCurrencyAddition: 1
-    constantCurrencyGainRate: 1
+    constantCurrencyAddition: 0
+    constantCurrencyGainRate: 0
   alwaysGainCurrency: 0
   homeBases:
   - {fileID: 489064212}
@@ -3643,7 +3643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnInstructions:
-  - agentConfiguration: {fileID: 11400000, guid: 60ff623a9e3d4f842becf9d8295185a1,
+  - agentConfiguration: {fileID: 11400000, guid: 301a700ea670e6545a715e9da613f5df,
       type: 2}
     delayToSpawn: 3
     startingNode: {fileID: 380941445}
